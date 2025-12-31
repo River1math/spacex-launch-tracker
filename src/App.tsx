@@ -8,8 +8,7 @@ import LoadingSpinner from "./components/LoadingSpinner";
 // ✅ 你项目里如果 types.ts 有类型，就用它（推荐）
 import type { Launch } from "./types";
 
-// ⚠️ 这里按你的 mockApi 实际导出改函数名：
-// - 可能叫 getLaunches / fetchLaunches / getAllLaunches 等
+
 import { fetchLaunchData } from "./mockApi";
 
 type FilterStatus = "all" | "success" | "failure";
@@ -26,33 +25,25 @@ export default function App() {
 
   // 3) 拉取数据（mock api）
   useEffect(() => {
-    let isMounted = true;
 
     async function load() {
       try {
         setLoading(true);
         setError("");
 
-        const data = await fetchLaunchData (); // ⚠️ 若报错：说明你的函数名不同，改这里
-        if (!isMounted) return;
+        const data = await fetchLaunchData (); 
+  
 
         setLaunches(data);
       } catch {
-        if (!isMounted) return;
 
         setError("Failed to load launches.");
       } finally {
-        if (!isMounted) {
         setLoading(false);
-        }
       }
     }
 
     load();
-
-    return () => {
-      isMounted = false;
-    };
   }, []);
 
   // 4) 统计 counts（派生数据，不要 useState）
